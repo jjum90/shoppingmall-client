@@ -53,8 +53,6 @@ const ProductInfo = ({name, price, id, selectQuantity, onIncrease, onDecrease}) 
                 <button style={btnStyle} onClick={useHandleIncrease}>추가</button>
                 <button style={btnStyle} onClick={useHandleDecrease}>삭제</button>
             </div>
-  
-            {/* <button onClick={handleChange}>수정</button> */}
         </div>
     );
 };

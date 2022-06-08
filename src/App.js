@@ -38,7 +38,7 @@ function useMemberFetch(url) {
  * @returns 
  */
 function useProductFetch(url) {
-  const[productPayload, setProductPayload] = useState(null);
+  const[productPayload, setProductPayload] = useState([]);
   const[productLoading, setProductLoading] = useState(true);
   const[productError, setProductError] = useState('');
   const callProductAPI = async() => {
@@ -63,14 +63,14 @@ function App () {
   // const name = useInput("");
   const {memberPayload, memberLoading, memberError, setMemberPayload, setMemberLoading} = useMemberFetch('http://localhost:8080/api/v1.0/member/1');
   const {productPayload, productLoading, productError, setProductPayload, setProductLoading} = useProductFetch('http://localhost:8080/api/v1.0/product');
-  const totalAmount = 0;
+  const [totalAmount, setTotalAmount] = useState(0);
 
-  // useEffect(()=>{
-  //   console.log(productPayload);
-  //   productPayload.reduce((info)=>{
-
-  //   })
-  // }, [productPayload])
+  useEffect(()=>{
+    console.log(productPayload);
+    setTotalAmount(productPayload.reduce((accumlator, object)=>{
+      return accumlator + (object.price * object.selectQuantity);
+    }, 0))
+  }, [productPayload])
 
 
   const handleIncrease = (id, data) => {
@@ -101,6 +101,8 @@ function App () {
               {!productLoading && productError && <span>{productError}</span> }
               {!productLoading && !productError && <ProductInfoList data={productPayload} onIncrease={handleIncrease} onDecrease={handleDecrease}></ProductInfoList>}
             </div>
+            <h3>총 결제 금액</h3>
+            <div>{totalAmount}</div>
           </div>
           
           <div className='Customer-Container'>
@@ -112,8 +114,6 @@ function App () {
               </div>
           </div>
           <div className='Payment-Container'>
-              <h3>총 결제 금액</h3>
-              <div className='Customer-Item'></div>
               <h3>결제 타입 정보</h3>
               <div className='Customer-Item'>
                 <div className='Customer-Sub-Item'>1. 자동 </div>
