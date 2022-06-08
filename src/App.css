@@ -14,14 +14,13 @@
 }
 
 .App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
+  background-color: #00B5AD;
   color: white;
+  font-size: 2rem;
+  padding: 1.2rem;
+  text-align: center;
+  font-weight: 600;
+  margin-bottom: 2rem;
 }
 
 .App-link {
@@ -35,4 +34,66 @@
   to {
     transform: rotate(360deg);
   }
+}
+
+body {
+  background: #E0E0E0;
+}
+.Container-Wrapper {
+  left: 50%;
+}
+
+.Product-Container {
+  float: left;
+  width: 40%;
+  margin: 0 auto;
+  padding: 1rem;
+  margin-bottom: 2rem;
+  margin-right: 2rem;
+  margin-left: 2rem;
+  background-color: #FAFAFA;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+}
+
+.Payment-Container {
+  float: left;
+  width: 30%;
+  margin: 0 auto;
+  margin-bottom: 2rem;
+  background-color: #FAFAFA;
+  padding: 1rem;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+}
+
+.Customer-Container {
+  float: left;
+  width: 30%;
+  margin: 0 auto;
+  background-color: #FAFAFA;
+  padding: 1rem;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+};
+
+.Customer-Item {
+  border: 1px solid black;
+  background-color: #FAFAFA;
+  margin: 20px;
+  padding: 20px;
+  width: 200px;
+  height: 100px;
+}
+
+.Customer-Sub-Item {
+  padding : 6px;
+  margin : 0 auto;
+  margin : 5px;
+  font-size: 1rm;
+};
+
+.Input-Item {
+    width:290px; height:70px;
+    border:none;
+    padding:15px;
+    font-size:16px;
+    color:#aaa;
 }
