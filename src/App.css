@@ -91,9 +91,11 @@ body {
 };
 
 .Input-Item {
-    width:290px; height:70px;
-    border:none;
-    padding:15px;
-    font-size:16px;
-    color:#aaa;
+  margin-right: 10px;
+  width:290px; 
+  height:70px;
+  border:none;
+  padding:15px;
+  font-size:16px;
+  color:#aaa;
 }

@@ -59,10 +59,37 @@ function useProductFetch(url) {
   return {productPayload, productLoading, productError, setProductPayload, setProductLoading}
 }
 
+/**
+ * 결제하기 함수
+ * @param {*} url 
+ * @returns 
+ */
+ function usePaymentFetch(url) {
+  const[paymentPayload, setPaymentPayload] = useState([]);
+  const[paymentLoading, setPaymentLoading] = useState(true);
+  const[paymentError, setPaymentError] = useState('');
+  const callPaymentAPI = async() => {
+    try {
+      const {data} = await Axios.get(url);
+      setPaymentPayload(data);
+    } catch (error) {
+      setPaymentError('fail get product infos');
+    } finally {
+      setPaymentLoading(false);
+    }
+  };
+
+  useEffect(()=>{
+    callPaymentAPI();    
+  }, [])
+
+  return {paymentPayload, paymentLoading, paymentError, setPaymentPayload, setPaymentLoading}
+}
+
 function App () {
-  // const name = useInput("");
   const {memberPayload, memberLoading, memberError, setMemberPayload, setMemberLoading} = useMemberFetch('http://localhost:8080/api/v1.0/member/1');
   const {productPayload, productLoading, productError, setProductPayload, setProductLoading} = useProductFetch('http://localhost:8080/api/v1.0/product');
+  // const {paymentPayload, paymentLoading, paymentError, setPaymentPayload, setPaymentLoading} = usePaymentFetch('http://localhost:8080/api/v1.0/order');
   const [totalAmount, setTotalAmount] = useState(0);
 
   useEffect(()=>{
@@ -71,6 +98,12 @@ function App () {
       return accumlator + (object.price * object.selectQuantity);
     }, 0))
   }, [productPayload])
+
+  // useEffect(()=>{
+  //   console.log(paymentPayload);
+  //   alert('결제가 정상적으로 완료되었습니다.!!!')
+  //   useMemberFetch('http://localhost:8080/api/v1.0/member/1');
+  // }, [])
 
 
   const handleIncrease = (id, data) => {
@@ -88,6 +121,17 @@ function App () {
       })
     );
   }
+
+  const btnStyle  = {
+    color: 'white',
+    background: 'teal',
+    marginRight : '10px',
+    padding: '0.375rem 0.75rem',
+    border: '1px solid teal',
+    borderRadius: '0.25rem',
+    fontSize: '1rem',
+    lineHeight: '1.5'
+  };
 
   return (
     <Fragment>
@@ -122,8 +166,10 @@ function App () {
                 <div className='Customer-Sub-Item'>4. PG </div>
               </div>
               <h3>결제 타입 입력</h3>
-              <div><input className="Input-Item" placeholder='결제 타입을 입력해주세요...'/></div>
-              {/* <button style={btnStyle} onClick={useHandleDecrease}>삭제</button> */}
+              <div className='Customer-Item'>
+                <input className="Input-Item" placeholder='결제 타입을 입력해주세요...'/>
+                <button style={btnStyle} onClick>결제하기</button>
+              </div>
           </div>
         </div>
 
