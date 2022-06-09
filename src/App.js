@@ -1,4 +1,4 @@
-import React, {useState, useEffect, Fragment} from 'react';
+import React, {useState, useEffect, useRef, Fragment} from 'react';
 import ProductInfoList from "./components/ProductInfoList";
 import CustomerInfo from './components/CustomerInfo';
 import Axios from 'axios';
@@ -7,7 +7,7 @@ import './App.css';
 
 /**
  * 멤버 정보 조회 함수
- * @param {*} url 
+ * @param {*} 
  * @returns 
  */
 function useMemberFetch(url) {
@@ -16,7 +16,7 @@ function useMemberFetch(url) {
   const[memberError, setMemberError] = useState('');
   const callMemberAPI = async() => {
     try {
-      const {data} = await Axios.get(url);
+      const {data} = await Axios.get('http://localhost:8080/api/v1.0/member/1');
       setMemberPayload(data);
     } catch (error) {
       setMemberError('fail get member info');
@@ -37,13 +37,13 @@ function useMemberFetch(url) {
  * @param {*} url 
  * @returns 
  */
-function useProductFetch(url) {
+function useProductFetch() {
   const[productPayload, setProductPayload] = useState([]);
   const[productLoading, setProductLoading] = useState(true);
   const[productError, setProductError] = useState('');
   const callProductAPI = async() => {
     try {
-      const {data} = await Axios.get(url);
+      const {data} = await Axios.get('http://localhost:8080/api/v1.0/product');
       setProductPayload(data);
     } catch (error) {
       setProductError('fail get product infos');
@@ -61,50 +61,59 @@ function useProductFetch(url) {
 
 /**
  * 결제하기 함수
- * @param {*} url 
+ * @param {*}
  * @returns 
  */
- function usePaymentFetch(url) {
-  const[paymentPayload, setPaymentPayload] = useState([]);
-  const[paymentLoading, setPaymentLoading] = useState(true);
-  const[paymentError, setPaymentError] = useState('');
-  const callPaymentAPI = async() => {
-    try {
-      const {data} = await Axios.get(url);
-      setPaymentPayload(data);
-    } catch (error) {
-      setPaymentError('fail get product infos');
-    } finally {
-      setPaymentLoading(false);
+ function usePaymentFetch(inputPayment, totalAmount, productPayload, memberPayload, memberLoading, setMemberPayload, setMemberLoading) {
+
+  function getOrderInfo() {
+    const mappingData = {
+      '자동' : 'AUTO',
+      '포인트' : 'POINT',
+      '적립금' : 'MILEAGE',
+      'PG' : 'PG'
     }
-  };
+    const orders = [];
+    for (const product of productPayload) {
+      orders.push({
+        productId : product.id,
+        amount : product.price,
+        quantity : product.selectQuantity
+      })
+    }
 
-  useEffect(()=>{
-    callPaymentAPI();    
-  }, [])
+    return  {
+      memberId : memberPayload.id,
+      payType : mappingData[inputPayment.current.value.trim()],
+      totalAmount : totalAmount,
+      orders : orders
+    }
+  }
 
-  return {paymentPayload, paymentLoading, paymentError, setPaymentPayload, setPaymentLoading}
+  Axios.post('http://localhost:8080/api/v1.0/order', getOrderInfo())
+    .then(function (response) {
+      if(response.status == 200){
+          alert('Success payment process!');
+      } else {
+          alert('Fail payment process!');
+      }
+  }).catch(function (error) {
+      console.log(error);
+      alert('Fail payment process!')
+  });
 }
 
 function App () {
-  const {memberPayload, memberLoading, memberError, setMemberPayload, setMemberLoading} = useMemberFetch('http://localhost:8080/api/v1.0/member/1');
-  const {productPayload, productLoading, productError, setProductPayload, setProductLoading} = useProductFetch('http://localhost:8080/api/v1.0/product');
-  // const {paymentPayload, paymentLoading, paymentError, setPaymentPayload, setPaymentLoading} = usePaymentFetch('http://localhost:8080/api/v1.0/order');
+  const {memberPayload, memberLoading, memberError, setMemberPayload, setMemberLoading} = useMemberFetch();
+  const {productPayload, productLoading, productError, setProductPayload, setProductLoading} = useProductFetch();
   const [totalAmount, setTotalAmount] = useState(0);
-
+  const inputPayment = useRef();
   useEffect(()=>{
     console.log(productPayload);
     setTotalAmount(productPayload.reduce((accumlator, object)=>{
       return accumlator + (object.price * object.selectQuantity);
     }, 0))
   }, [productPayload])
-
-  // useEffect(()=>{
-  //   console.log(paymentPayload);
-  //   alert('결제가 정상적으로 완료되었습니다.!!!')
-  //   useMemberFetch('http://localhost:8080/api/v1.0/member/1');
-  // }, [])
-
 
   const handleIncrease = (id, data) => {
     setProductPayload(
@@ -122,16 +131,9 @@ function App () {
     );
   }
 
-  const btnStyle  = {
-    color: 'white',
-    background: 'teal',
-    marginRight : '10px',
-    padding: '0.375rem 0.75rem',
-    border: '1px solid teal',
-    borderRadius: '0.25rem',
-    fontSize: '1rem',
-    lineHeight: '1.5'
-  };
+  const useHandlePayment = (e) => {
+    usePaymentFetch(inputPayment, totalAmount, productPayload, memberPayload, memberLoading, setMemberPayload, setMemberLoading);
+  }
 
   return (
     <Fragment>
@@ -167,8 +169,8 @@ function App () {
               </div>
               <h3>결제 타입 입력</h3>
               <div className='Customer-Item'>
-                <input className="Input-Item" placeholder='결제 타입을 입력해주세요...'/>
-                <button style={btnStyle} onClick>결제하기</button>
+                <input ref={inputPayment} className='Customer-Sub-Item' placeholder='결제 타입을 입력해주세요...'/>
+                <button className='btnStyle Customer-Sub-Item' onClick={useHandlePayment}>결제하기</button>
               </div>
           </div>
         </div>
