@@ -49,10 +49,14 @@ const ProductInfo = ({name, price, id, selectQuantity, onIncrease, onDecrease}) 
             <div style={productItemStyle}><b>상품 : {name}</b></div>
             <div style={productItemStyle}>가격 : {price} 원</div>
             <div style={productItemStyle}>선택 갯 수 : {selectQuantity}</div>
-            <div style={productItemStyle}>
-                <button style={btnStyle} onClick={useHandleIncrease}>추가</button>
-                <button style={btnStyle} onClick={useHandleDecrease}>삭제</button>
-            </div>
+            {
+                onIncrease && 
+                onDecrease &&
+                <div style={productItemStyle}>
+                    <button style={btnStyle} onClick={useHandleIncrease}>추가</button>
+                    <button style={btnStyle} onClick={useHandleDecrease}>삭제</button>
+                </div>
+            }
         </div>
     );
 };

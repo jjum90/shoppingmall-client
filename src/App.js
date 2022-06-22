@@ -4,13 +4,12 @@ import CustomerInfo from './components/CustomerInfo';
 import Axios from 'axios';
 import './App.css';
 
-
 /**
  * 멤버 정보 조회 함수
  * @param {*} 
  * @returns 
  */
-function useMemberFetch(url) {
+function useMemberFetch() {
   const[memberPayload, setMemberPayload] = useState(null);
   const[memberLoading, setMemberLoading] = useState(true);
   const[memberError, setMemberError] = useState('');
@@ -73,12 +72,13 @@ function useProductFetch() {
       '적립금' : 'MILEAGE',
       'PG' : 'PG'
     }
-    const orders = [];
+    const products = [];
     for (const product of productPayload) {
-      orders.push({
-        productId : product.id,
-        amount : product.price,
-        quantity : product.selectQuantity
+      products.push({
+        id : product.id,
+        name : product.name,
+        price : product.price,
+        selectQuantity : product.selectQuantity
       })
     }
 
@@ -86,7 +86,9 @@ function useProductFetch() {
       memberId : memberPayload.id,
       payType : mappingData[inputPayment.current.value.trim()],
       totalAmount : totalAmount,
-      orders : orders
+      order : {
+        products : products
+      }
     }
   }
 
@@ -101,6 +103,7 @@ function useProductFetch() {
       console.log(error);
       alert('Fail payment process!')
   });
+
 }
 
 function App () {
@@ -108,6 +111,7 @@ function App () {
   const {productPayload, productLoading, productError, setProductPayload, setProductLoading} = useProductFetch();
   const [totalAmount, setTotalAmount] = useState(0);
   const inputPayment = useRef();
+
   useEffect(()=>{
     console.log(productPayload);
     setTotalAmount(productPayload.reduce((accumlator, object)=>{

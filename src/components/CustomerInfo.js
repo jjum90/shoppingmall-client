@@ -1,5 +1,6 @@
 import React from 'react';
-
+import {Link, Route, Routes } from 'react-router-dom';
+import OrderInfoList from './OrderInfoList';
 /**
  * 멤버 정보 컴포넌트
  * @param {*} param0 
@@ -15,6 +16,10 @@ const CustomerInfo = ({name, mileage, points, coupons}) => {
 
     return (
         <div>
+            <Routes>
+                <Route path="/order" element={<OrderInfoList />}/>
+            </Routes>
+    
             <div style={customerItemStyle}>1. 고객 이름 : {name}</div>
             <div style={customerItemStyle}>2. 고객 마일리지 : {mileage.balance}</div>
             <div style={customerItemStyle}>3. 고객 포인트
@@ -28,6 +33,13 @@ const CustomerInfo = ({name, mileage, points, coupons}) => {
                 {coupons.map(coupon => (
                     <div style={customerItemStyle} key={coupon.id}> - {coupon.discountRate}% </div>
                 ))}
+            </div>
+            <div>
+                <ul>
+                    <li>
+                        <Link to ="/order">주문 리스트</Link>
+                    </li>
+                </ul>
             </div>
         </div>
     );
