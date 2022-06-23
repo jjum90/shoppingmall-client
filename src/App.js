@@ -1,8 +1,11 @@
 import React, {useState, useEffect, useRef, Fragment} from 'react';
+import {Link, Route, Routes } from 'react-router-dom';
 import ProductInfoList from "./components/ProductInfoList";
 import CustomerInfo from './components/CustomerInfo';
+import OrderInfoList from './components/OrderInfoList';
 import Axios from 'axios';
 import './App.css';
+
 
 /**
  * 멤버 정보 조회 함수
@@ -141,43 +144,79 @@ function App () {
 
   return (
     <Fragment>
-      <div>
-        <h1 className='App-header'>ShoppingMall</h1>
-        <div className='Container-Wrapper'>
-          <div className='Product-Container'>
-            <h3>상품 목록</h3>
-            <div>
-              {productLoading && <progress value="50" max="100"></progress>}
-              {!productLoading && productError && <span>{productError}</span> }
-              {!productLoading && !productError && <ProductInfoList data={productPayload} onIncrease={handleIncrease} onDecrease={handleDecrease}></ProductInfoList>}
+      <Routes>
+        <Route path="/" element={
+        <div>
+          <h1 className='App-header'>ShoppingMall</h1>
+          <div className='Container-Wrapper'>
+            <div className='Product-Container'>
+              <h3>상품 목록</h3>
+              <div>
+                {productLoading && <progress value="50" max="100"></progress>}
+                {!productLoading && productError && <span>{productError}</span> }
+                {!productLoading && !productError && <ProductInfoList data={productPayload} onIncrease={handleIncrease} onDecrease={handleDecrease}></ProductInfoList>}
+              </div>
+              <h3>총 결제 금액</h3>
+              <div>{totalAmount}</div>
             </div>
-            <h3>총 결제 금액</h3>
-            <div>{totalAmount}</div>
-          </div>
-          
-          <div className='Customer-Container'>
-              <h3>고객 정보</h3>  
-              <div className='Customer-Item'>
-                {memberLoading && <progress value="50" max="100"></progress>}
-                {!memberLoading && memberError && <span>{memberError}</span> }
-                {!memberLoading && !memberError && <CustomerInfo {...memberPayload}></CustomerInfo> }
-              </div>
-          </div>
-          <div className='Payment-Container'>
-              <h3>결제 타입 정보</h3>
-              <div className='Customer-Item'>
-                <div className='Customer-Sub-Item'>1. 자동 </div>
-                <div className='Customer-Sub-Item'>2. 포인트 </div>
-                <div className='Customer-Sub-Item'>3. 적립금 </div>
-                <div className='Customer-Sub-Item'>4. PG </div>
-              </div>
-              <h3>결제 타입 입력</h3>
-              <div className='Customer-Item'>
-                <input ref={inputPayment} className='Customer-Sub-Item' placeholder='결제 타입을 입력해주세요...'/>
-                <button className='btnStyle Customer-Sub-Item' onClick={useHandlePayment}>결제하기</button>
-              </div>
+            
+            <div className='Customer-Container'>
+                <h3>고객 정보</h3>  
+                <div className='Customer-Item'>
+                  {memberLoading && <progress value="50" max="100"></progress>}
+                  {!memberLoading && memberError && <span>{memberError}</span> }
+                  {!memberLoading && !memberError && <CustomerInfo {...memberPayload}></CustomerInfo> }
+                </div>
+            </div>
+            <div className='Payment-Container'>
+                <h3>결제 타입 정보</h3>
+                <div className='Customer-Item'>
+                  <div className='Customer-Sub-Item'>1. 자동 </div>
+                  <div className='Customer-Sub-Item'>2. 포인트 </div>
+                  <div className='Customer-Sub-Item'>3. 적립금 </div>
+                  <div className='Customer-Sub-Item'>4. PG </div>
+                </div>
+                <h3>결제 타입 입력</h3>
+                <div className='Customer-Item'>
+                  <input ref={inputPayment} className='Customer-Sub-Item' placeholder='결제 타입을 입력해주세요...'/>
+                  <button className='btnStyle Customer-Sub-Item' onClick={useHandlePayment}>결제하기</button>
+                </div>
+            </div>
           </div>
         </div>
+       }/>
+
+       <Route path="/order" element={
+        <div>
+          <h1 className='App-header'>ShoppingMall</h1>
+          <div className='Container-Wrapper'>
+             <div className='Product-Container'>
+                <h3>주문 목록</h3>
+               <OrderInfoList/>
+             </div>
+          </div>
+          <div className='Customer-Container'>
+                <h3>고객 정보</h3>  
+                <div className='Customer-Item'>
+                  {memberLoading && <progress value="50" max="100"></progress>}
+                  {!memberLoading && memberError && <span>{memberError}</span> }
+                  {!memberLoading && !memberError && <CustomerInfo {...memberPayload}></CustomerInfo> }
+                </div>
+            </div>
+        </div>
+       }/>
+      </Routes>
+      <div>
+          <Link to ="/">
+              <button className='btnStyle'>
+                  상품 리스트
+              </button>            
+          </Link>
+          <Link to ="/order">
+              <button className='btnStyle'>
+                  주문 리스트
+              </button>            
+          </Link>
       </div>
     </Fragment>
         

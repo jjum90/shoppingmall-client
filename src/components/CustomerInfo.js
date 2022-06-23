@@ -26,11 +26,7 @@ const CustomerInfo = ({name, mileage, points, coupons}) => {
     };
 
     return (
-        <div>
-            <Routes>
-                <Route path="/order" element={<OrderInfoList />}/>
-            </Routes>
-    
+        <div>    
             <div style={customerItemStyle}>1. 고객 이름 : {name}</div>
             <div style={customerItemStyle}>2. 고객 마일리지 : {mileage.balance}</div>
             <div style={customerItemStyle}>3. 고객 포인트
@@ -44,13 +40,6 @@ const CustomerInfo = ({name, mileage, points, coupons}) => {
                 {coupons.map(coupon => (
                     <div style={customerItemStyle} key={coupon.id}> - {coupon.discountRate}% </div>
                 ))}
-            </div>
-            <div>
-                <Link to ="/order">
-                    <button style={btnStyle}>
-                        주문 리스트
-                    </button>            
-                </Link>
             </div>
         </div>
     );
