@@ -29,7 +29,8 @@ const ProductInfo = ({name, price, id, selectQuantity, onIncrease, onDecrease}) 
         border: '1px solid teal',
         borderRadius: '0.25rem',
         fontSize: '1rem',
-        lineHeight: '1.5'
+        lineHeight: '1.5',
+        cursor: 'pointer'
     };
 
     const useHandleIncrease = (e) => {

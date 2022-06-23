@@ -21,17 +21,6 @@ const OrderInfo = ({info}) => {
         fontSize: '1rm',
     };
 
-    const btnStyle  = {
-        color: 'white',
-        background: 'teal',
-        marginRight : '10px',
-        padding: '0.375rem 0.75rem',
-        border: '1px solid teal',
-        borderRadius: '0.25rem',
-        fontSize: '1rem',
-        lineHeight: '1.5'
-    };
-
     return(
         <div style={productStyle}>
             <div style={productItemStyle}><b> :</b></div>

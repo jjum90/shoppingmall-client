@@ -13,6 +13,17 @@ const CustomerInfo = ({name, mileage, points, coupons}) => {
         margin : '5px',
         fontSize: '1rm',
     };
+    const btnStyle  = {
+        color: 'white',
+        background: 'teal',
+        marginRight : '10px',
+        padding: '0.375rem 0.75rem',
+        border: '1px solid teal',
+        borderRadius: '0.25rem',
+        fontSize: '1rem',
+        lineHeight: '1.5',
+        cursor: 'pointer'
+    };
 
     return (
         <div>
@@ -35,11 +46,11 @@ const CustomerInfo = ({name, mileage, points, coupons}) => {
                 ))}
             </div>
             <div>
-                <ul>
-                    <li>
-                        <Link to ="/order">주문 리스트</Link>
-                    </li>
-                </ul>
+                <Link to ="/order">
+                    <button style={btnStyle}>
+                        주문 리스트
+                    </button>            
+                </Link>
             </div>
         </div>
     );
