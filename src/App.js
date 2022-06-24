@@ -3,6 +3,7 @@ import {Link, Route, Routes } from 'react-router-dom';
 import ProductInfoList from "./components/ProductInfoList";
 import CustomerInfo from './components/CustomerInfo';
 import OrderInfoList from './components/OrderInfoList';
+import PGPopUp from './components/PGPopUp';
 import Axios from 'axios';
 import './App.css';
 
@@ -113,6 +114,7 @@ function App () {
   const {memberPayload, memberLoading, memberError, setMemberPayload, setMemberLoading} = useMemberFetch();
   const {productPayload, productLoading, productError, setProductPayload, setProductLoading} = useProductFetch();
   const [totalAmount, setTotalAmount] = useState(0);
+  const [showPopup, setShowPopup] = useState(false);
   const inputPayment = useRef();
 
   useEffect(()=>{
@@ -136,6 +138,10 @@ function App () {
         return id === info.id ? {...info, ...data} : info;
       })
     );
+  }
+
+  const handleTogglePopup = (e) => {
+    setShowPopup(!showPopup);
   }
 
   const useHandlePayment = (e) => {
@@ -179,9 +185,15 @@ function App () {
                 <h3>결제 타입 입력</h3>
                 <div className='Customer-Item'>
                   <input ref={inputPayment} className='Customer-Sub-Item' placeholder='결제 타입을 입력해주세요...'/>
-                  <button className='btnStyle Customer-Sub-Item' onClick={useHandlePayment}>결제하기</button>
+                  <button className='btnStyle Customer-Sub-Item' onClick={useHandlePayment}>주문 하기</button>
+                  <button className='btnStyle Customer-Sub-Item' onClick={handleTogglePopup.bind(this)}>팝업 표시</button>
                 </div>
             </div>
+          </div>
+          <div>
+            {
+              showPopup ? <PGPopUp handleTogglePopup={handleTogglePopup.bind(this)} useHandlePayment={useHandlePayment}></PGPopUp> : null
+            }
           </div>
         </div>
        }/>
@@ -206,6 +218,8 @@ function App () {
         </div>
        }/>
       </Routes>
+
+      
       <div>
           <Link to ="/">
               <button className='btnStyle'>
