@@ -72,6 +72,7 @@ function useProductFetch() {
   function getOrderInfo() {
     const mappingData = {
       '자동' : 'AUTO',
+      '쿠폰' : 'COUPON',
       '포인트' : 'POINT',
       '적립금' : 'MILEAGE',
       'PG' : 'PG'
